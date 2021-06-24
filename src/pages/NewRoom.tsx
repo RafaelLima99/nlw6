@@ -17,8 +17,8 @@ export function NewRoom(){
                 <strong>Crie salas de Q&amp;A ao-vivo</strong>
                 <p>Tire as dúvidas da sua audiência em tempo real</p>
             </aside>
-            <main className="main-content">
-                <div>
+            <main>
+                <div className="main-content">
                     <img src={logoImg} alt="Letmeask" />
                     {/* o user? verifica se o user é undefined
                     ou seja só exibe o user.name se ele não for undefine, só exibe se user.name tiver algum dado*/}
