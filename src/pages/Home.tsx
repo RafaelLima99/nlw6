@@ -7,22 +7,26 @@ import logoImg from '../assets/images/logo.svg';
 import googleIconImg from '../assets/images/google-icon.svg';
 import { Button } from '../components/Button';
 import '../styles/auth.scss'
+import { useContext } from "react";
+import { AuthContext } from "../App";
 
 export function Home(){
 
     const history = useHistory();
 
-    function handleCreateRoom() {
-        //para autenticar com conta do google
-        const provider = new firebase.auth.GoogleAuthProvider();
+    //Recebe o contexo AuthContex que esta no component App
+    //esse AuthContext tem o user e o signInWithGoogle 
+    //que tem informações da pessoa logada(user), e tbm tem a função de logar(signInWithGoogle)
+    const {user, signInWithGoogle} = useContext(AuthContext)
 
-        //para abrir o login do google como popup
-        auth.signInWithPopup(provider).then(result => {
-        console.log(result);
-            
-        });
+    async function handleCreateRoom() {
+        //se o usuario não estiver logado
+        if(!user){
+           await signInWithGoogle()
+        }
 
-        // history.push('/rooms/new')
+        //caso esteja
+        history.push('/rooms/new')
     }
 
     return(
