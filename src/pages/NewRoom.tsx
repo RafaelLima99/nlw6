@@ -1,15 +1,14 @@
 import { Link } from 'react-router-dom';
-import {useContext} from 'react'
-import { AuthContext } from '../App';
 import ilustrationImg from '../assets/images/illustration.svg';
 import logoImg from '../assets/images/logo.svg';
 import { Button } from '../components/Button';
 import '../styles/auth.scss'
+// import { useAuth } from '../hooks/useAuth';
 
 // toda função que começa com a palavra "use" é um hook
 export function NewRoom(){
 
-    const { user } = useContext(AuthContext);
+    // const { user } = useAuth;
 
     return(
         <div id="page-auth">
@@ -23,7 +22,7 @@ export function NewRoom(){
                     <img src={logoImg} alt="Letmeask" />
                     {/* o user? verifica se o user é undefined
                     ou seja só exibe o user.name se ele não for undefine, só exibe se user.name tiver algum dado*/}
-                    <h1>{user?.name}</h1>
+                    {/* <h1>{user?.name}</h1> */}
                     <h2>Criar uma nova sala</h2>
                     <form>
                         <input type="text"

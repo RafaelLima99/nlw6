@@ -1,14 +1,12 @@
 import { useHistory } from "react-router-dom";
 
-import {auth, firebase} from '../services/firebase'
 
 import ilustrationImg from '../assets/images/illustration.svg';
 import logoImg from '../assets/images/logo.svg';
 import googleIconImg from '../assets/images/google-icon.svg';
 import { Button } from '../components/Button';
 import '../styles/auth.scss'
-import { useContext } from "react";
-import { AuthContext } from "../App";
+import { useAuth } from "../hooks/useAuth";
 
 export function Home(){
 
@@ -17,7 +15,7 @@ export function Home(){
     //Recebe o contexo AuthContex que esta no component App
     //esse AuthContext tem o user e o signInWithGoogle 
     //que tem informações da pessoa logada(user), e tbm tem a função de logar(signInWithGoogle)
-    const {user, signInWithGoogle} = useContext(AuthContext)
+    const {user, signInWithGoogle} = useAuth()
 
     async function handleCreateRoom() {
         //se o usuario não estiver logado
