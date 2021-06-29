@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ilustrationImg from '../assets/images/illustration.svg';
 import logoImg from '../assets/images/logo.svg';
 import { Button } from '../components/Button';
@@ -8,12 +8,16 @@ import { database } from '../services/firebase';
 import '../styles/auth.scss'
 import { useAuth } from '../hooks/useAuth';
 
+
 // toda função que começa com a palavra "use" é um hook
+
 export function NewRoom(){
 
     const { user } = useAuth();
-
+    const history = useHistory();
     const [newRoom, setNewRoom] = useState('');
+   
+    
 
     // o tipo FormEvent vem de um import chamdo FormEvent
     async function handleCreateRoom(event: FormEvent) {
@@ -22,7 +26,7 @@ export function NewRoom(){
         // nesse caso o preventDefault impede que isso aconteça
         event.preventDefault();
 
-        //trim remove os espaços de uma string
+        // trim remove os espaços de uma string
         if(newRoom.trim() === ''){
             return;
         }
@@ -32,9 +36,9 @@ export function NewRoom(){
             title: newRoom,
             authorId: user?.id 
         })
-
-
-        console.log(newRoom)
+        
+        //não é aspas e sim crase
+        history.push(`/rooms/${firebaseRoom.key}`)
     }
 
     return(
@@ -56,6 +60,7 @@ export function NewRoom(){
                         placeholder="Nome da sala"
                         onChange={event => setNewRoom(event.target.value)}
                         value={newRoom}
+                        
                         />
                         <Button type="submit">
                             Criar sala
