@@ -1,5 +1,4 @@
 .button {
-    margin-top: 64px;
     height: 50px;
     border-radius: 8px;
     font-weight: 500;
@@ -20,12 +19,12 @@
         margin-right: 8px;
     }
 
-    //se o butão não estiver disabled o hover poderá ser usado
+    //se o butï¿½o nï¿½o estiver disabled o hover poderï¿½ ser usado
     &:not(:disabled):hover {
         filter: brightness(0.9)
     }
 
-    //quando o butão estuver disable
+    //quando o butï¿½o estuver disable
     &disable {
         opacity: 0.6;
         cursor: not-allowed;

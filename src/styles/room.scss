@@ -17,7 +17,7 @@
         }
     }
 
-    main {
+    .main {
         max-width: 800px;
         margin: 0 auto;
 
@@ -54,6 +54,30 @@
                 box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
                 resize: vertical;
                 min-height: 130px;
+            }
+
+            .form-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 16px;
+
+                span {
+                    font-size: 14px;
+                    color: #737380;
+                    font-weight: 500;
+
+                    button {
+                        background: transparent;
+                        border: 0;
+                        color: #835AFD;
+                        text-decoration: underline;
+                        font-size: 14px;
+                        font-weight: 500;
+                        cursor: pointer;
+                    }
+                }
+
             }
         }
     }
