@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import { FormEvent, useState } from "react";
 import { useParams } from "react-router-dom";
 import logoImg from "../assets/images/logo.svg"
@@ -13,6 +14,18 @@ type RoomParams = {
     id : string;
 }
 
+type FirebaseQuestions = Record<string, {
+    author: {
+        name: string;
+        avatar: string;
+    }
+    content: string;
+    isAnswered: boolean;
+    isHighLighted: boolean;
+}> 
+    
+
+
 export function Room() {
 
     //pega os parametros da url
@@ -25,9 +38,36 @@ export function Room() {
 
     const {user} = useAuth();
 
+    //função acionada quando o valor da varial roomId é mudado ou quando esse componet é exibido em tela
+    useEffect(() => {
+        const roomRef = database.ref(`rooms/${roomId}`);
+
+        roomRef.once('value', room => {
+            const databaseRoom = room.val();
+            const FirebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {}
+
+            //converte o objeto para array
+            const parsedQuestions = Object.entries(FirebaseQuestions).map(([key, value]) => {
+                 
+                return {
+                    id: key,
+                    content: value.content,
+                    author: value.author,
+                    isHighLighted: value.isHighLighted
+                 }
+
+            })
+            console.log(parsedQuestions)
+        })
+
+    }, [roomId]);
+
+
     async function handlerSendQuestion(event: FormEvent){
+
         event.preventDefault();
-        if(newQuestion.trim() == ""){
+
+        if(newQuestion.trim() === ""){
             return;
         }
 
@@ -39,7 +79,7 @@ export function Room() {
             content: newQuestion,
             author: {
                 name:user.name,
-                avatar: user.avatar,
+                avatar: user.avatar
             },
             isHighLighted: false,
             isAnswered: false
@@ -68,7 +108,14 @@ export function Room() {
                     onChange={event => setNewQuestion(event.target.value)} 
                     value={newQuestion}/>
                     <div className="form-footer">
-                        <span>Para enviar uma pergunta, <button>Faça seu login</button>.</span>
+                        { user ? (
+                            <div className="user-info">
+                                <img src={user.avatar}/>
+                                <span>{user.name}</span>
+                            </div>
+                        ) : (   
+                            <span>Para enviar uma pergunta, <button>Faça seu login</button>.</span>
+                        ) }
                         <Button type="submit" disabled={!user} >Enviar pergunta</Button>
                     </div>
                 </form>
