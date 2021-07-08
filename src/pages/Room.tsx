@@ -23,6 +23,18 @@ type FirebaseQuestions = Record<string, {
     isAnswered: boolean;
     isHighLighted: boolean;
 }> 
+
+type Questions = {
+    id: string,
+    author: {
+        name: string;
+        avatar: string;
+    }
+    content: string;
+    isAnswered: boolean;
+    isHighLighted: boolean;
+
+}
     
 
 
@@ -32,7 +44,9 @@ export function Room() {
     //é do tipo RoomParams
     const params = useParams<RoomParams>();
      
-    const [newQuestion, setNewQuestion] = useState('')
+    const [newQuestion, setNewQuestion] = useState('') ;
+    const [questions, setQuestions] = useState <Questions[]>([]);
+    const [title, setTitle] = useState('');
 
     const roomId = params.id;
 
@@ -42,7 +56,7 @@ export function Room() {
     useEffect(() => {
         const roomRef = database.ref(`rooms/${roomId}`);
 
-        roomRef.once('value', room => {
+        roomRef.on('value', room => {
             const databaseRoom = room.val();
             const FirebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {}
 
@@ -53,11 +67,15 @@ export function Room() {
                     id: key,
                     content: value.content,
                     author: value.author,
-                    isHighLighted: value.isHighLighted
+                    isHighLighted: value.isHighLighted,
+                    isAnswered: value.isAnswered
                  }
 
             })
-            console.log(parsedQuestions)
+            
+            setTitle(databaseRoom.title);
+            setQuestions(parsedQuestions);
+            
         })
 
     }, [roomId]);
@@ -100,8 +118,8 @@ export function Room() {
             </header>
             <div className="main">
                 <div className="room-title">
-                    <h1>Sala React</h1>
-                    <span>4 perguntas</span>
+                    <h1>Sala {title}</h1>
+                   {questions.length > 0 && <span>{questions.length} perguntas</span>}
                 </div>
                 <form onSubmit={handlerSendQuestion}>
                     <textarea placeholder="O que você quer perguntar?"
@@ -110,7 +128,7 @@ export function Room() {
                     <div className="form-footer">
                         { user ? (
                             <div className="user-info">
-                                <img src={user.avatar}/>
+                                <img alt="foto" src={user.avatar}/>
                                 <span>{user.name}</span>
                             </div>
                         ) : (   
@@ -119,6 +137,7 @@ export function Room() {
                         <Button type="submit" disabled={!user} >Enviar pergunta</Button>
                     </div>
                 </form>
+                {JSON.stringify(questions)}
             </div>
        </div>
         
